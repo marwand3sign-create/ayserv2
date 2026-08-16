@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "installCommand": "yarn install && cd frontend && yarn install",
   "buildCommand": "cd frontend && yarn build",
   "outputDirectory": "frontend/build",
   "rewrites": [
