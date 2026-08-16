@@ -1,6 +1,1 @@
-🔗 رابط ومسار لوحة التحكم:
-المسار (Route): /tba-control-x7q2
-الرابط المباشر محلياً: http://localhost:3000/tba-control-x7q2
-🔑 بيانات تسجيل الدخول (Default Credentials):
-البريد الإلكتروني (Email): ayser@tuningbyayser.com
-كلمة السر (Password): AyserTBA@2026
+
