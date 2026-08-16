@@ -1,0 +1,187 @@
+{
+  "theme": "dark",
+  "archetype": "THE PERFORMANCE PRO (Elite Athleticism & Precision)",
+  "typography": {
+    "fonts": [
+      {
+        "family": "Beiruti",
+        "purpose": "Primary Arabic Headings (Display & Kinetic)",
+        "weights": ["400", "700", "900"]
+      },
+      {
+        "family": "IBM Plex Sans Arabic",
+        "purpose": "Arabic Body & Technical UI Text",
+        "weights": ["300", "400", "500", "600"]
+      },
+      {
+        "family": "Chivo",
+        "purpose": "English Headings",
+        "weights": ["700", "900"]
+      },
+      {
+        "family": "JetBrains Mono",
+        "purpose": "Technical Data, Labels, Numbers, Code/Diagnostic displays",
+        "weights": ["400"]
+      }
+    ],
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl tracking-tighter font-black uppercase",
+      "h2": "text-3xl sm:text-4xl lg:text-5xl tracking-tight font-bold",
+      "h3": "text-xl sm:text-2xl font-bold",
+      "body": "text-base leading-relaxed text-gray-300",
+      "mono_label": "font-mono text-xs uppercase tracking-[0.2em] text-[#FF2020]"
+    }
+  },
+  "colors": {
+    "background": {
+      "base": "#050505",
+      "surface": "#0A0A0A",
+      "surface_elevated": "#111111"
+    },
+    "brand": {
+      "primary": "#FF2020",
+      "primary_hover": "#D41010",
+      "accent": "#00F0FF"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A1A1AA",
+      "muted": "#71717A"
+    },
+    "border": {
+      "default": "rgba(255,255,255,0.05)",
+      "active": "rgba(255,32,32,0.4)"
+    }
+  },
+  "spacing_and_layout": {
+    "grid_protocol": "MODE A: THE 'TETRIS' GRID (For Marketing)",
+    "container_padding": "px-4 md:px-8 lg:px-16",
+    "section_spacing": "py-24 md:py-32",
+    "bento_gaps": "gap-4 md:gap-6 lg:gap-8",
+    "rtl_guidelines": "Critical: RTL-first design. Use Tailwind's logical properties (e.g., ms-, me-, ps-, pe-, start-, end-) instead of left/right to ensure seamless AR/EN switching. Arabic text must use Beiruti/IBM Plex Sans Arabic."
+  },
+  "visual_enhancers": {
+    "surfaces": [
+      {
+        "name": "The Technical Grid Border",
+        "usage": "Services, Features, Dashboard Widgets",
+        "classes": "border border-white/5 bg-white/[0.02] backdrop-blur-md"
+      },
+      {
+        "name": "Diagnostic UI",
+        "usage": "Data points, labels, coordinates",
+        "styles": "Use monospace fonts, thin 1px borders, and brackets e.g. [ SYSTEM_READY ]"
+      }
+    ],
+    "textures": [
+      "Carbon fiber subtle repeating pattern for specific tech sections",
+      "Radial glow masks for lighting effects behind key components (Electric Red / Tech Blue)"
+    ],
+    "cursor": "Custom technical dot cursor with an outer ring that scales on hover. Must use framer-motion and track mouse coordinates (Desktop only)."
+  },
+  "motion": {
+    "hero": "Kinetic typography with masked line-by-line reveal (e.g. overflow-hidden wrappers around text lines). Parallax background using Framer Motion useScroll.",
+    "scroll": "Lenis smooth scrolling is mandatory for the premium feel.",
+    "hover_states": "Micro-interactions: Red accent borders appear, technical brackets expand, subtle image scaling (1.05).",
+    "page_load": "Short ECU-initializing intro loader. Black screen with monospace text rapidly logging 'ECU BOOT...', 'CALIBRATING...', 'ACCESS GRANTED'.",
+    "accessibility": "Use Framer Motion's useReducedMotion hook to disable heavy parallax/animations for users who prefer reduced motion."
+  },
+  "components_and_layouts": {
+    "Hero": {
+      "description": "Cinematic header, full screen. Real performance car background. Particles/light streaks over the image.",
+      "features": ["Parallax bg", "Masked title reveal ('Unlock The Full Potential Of Your Car')", "Primary CTA: Book Now"]
+    },
+    "VehicleSelector": {
+      "description": "Interactive step-by-step diagnostic tool UI (Brand -> Model -> Year -> Engine -> Fuel). Shows available services upon completion."
+    },
+    "ServicesDisplay": {
+      "description": "Innovative interactive horizontal list (or slider). Items: CAT OFF, DPF OFF, EGR OFF, Speed Limiter OFF, Rev Limiter, Pop & Bang, etc.",
+      "features": ["Hover states: glitch effect or tech scanline", "Click opens a detailed modal with Shadcn Dialog"]
+    },
+    "ECUDataFlow": {
+      "description": "Section: 'From Data To Performance'. Visualizes data processing.",
+      "features": ["Animated SVG tech pathways or data lines", "Count-up performance stats (e.g. +40% HP, +50Nm Torque) using react-countup"]
+    },
+    "BeforeAfterSlider": {
+      "description": "Draggable slider comparing Stock vs Modified dyno graph or visual.",
+      "features": ["Use react-compare-slider or build a custom framer-motion interactive slider"]
+    },
+    "WhyChooseUs": {
+      "description": "Numbered manifesto chapters. Giant numbers (01, 02...) interacting with bold typography."
+    },
+    "ProcessTimeline": {
+      "description": "6-step animated process (Book/Diagnose/Analyze/Tune/Test/Deliver). Connected via glowing line."
+    },
+    "Marquee": {
+      "description": "Infinite scrolling car brand logos using react-fast-marquee. Must feel slow and editorial/technical.",
+      "features": ["react-icons/si logos (BMW, Mercedes, Audi, Porsche, Volkswagen, Ford, Honda)"]
+    },
+    "BookingForm": {
+      "description": "Strong contact form with tech UI aesthetics.",
+      "features": ["Floating WhatsApp button that opens prefilled message via wa.me URL"]
+    },
+    "LanguageSwitcher": {
+      "description": "Toggle between Arabic (AR) and English (EN). Ensure it updates the HTML dir attribute (rtl/ltr) and font families accordingly."
+    }
+  },
+  "libraries": {
+    "mandatory": [
+      "framer-motion",
+      "lucide-react",
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-dialog",
+      "react-icons",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "recommended": [
+      "@studio-freight/react-lenis",
+      "react-fast-marquee",
+      "react-countup",
+      "react-compare-slider",
+      "react-tsparticles",
+      "tsparticles"
+    ]
+  },
+  "media": {
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1783786372340-7e9e9a5683c3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwzfHxwZXJmb3JtYW5jZSUyMGNhciUyMGRhcmslMjBjaW5lbWF0aWN8ZW58MHx8fHwxNzg2ODE0ODQxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Sleek dark car under dramatic red lighting",
+        "category": "hero"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1784609525306-93e21dbf3c85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwyfHxwZXJmb3JtYW5jZSUyMGNhciUyMGRhcmslMjBjaW5lbWF0aWN8ZW58MHx8fHwxNzg2ODE0ODQxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Black sports car on dark road",
+        "category": "services_background"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1527383418406-f85a3b146499?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHwxfHxjYXIlMjBlbmdpbmUlMjB0dW5pbmclMjBlY3V8ZW58MHx8fHwxNzg2ODE0ODQxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Car engine bay",
+        "category": "ecu_data_flow"
+      }
+    ],
+    "icons": "Use react-icons/si for car brand logos. Example: SiBmw, SiMercedes, SiAudi, SiPorsche, SiVolkswagen, SiFord, SiHonda, SiToyota. Use lucide-react for standard UI icons."
+  },
+  "instructions_to_main_agent": [
+    "Content Architecture: Create organized data files (e.g., /src/data/services.js, /src/data/vehicles.js, /src/data/faq.js, /src/data/siteConfig.js) to store all content text and mappings. DO NOT hardcode large blocks of text in the components.",
+    "Bilingual Implementation: Implement a basic i18n structure. The default language is Arabic (RTL). Build a custom hook (e.g., useTranslation) or context to switch between EN and AR content.",
+    "Theme: This is a strictly Dark mode website. Ensure all Tailwind classes use dark mode explicitly or are designed strictly for a black background.",
+    "RTL Support: Rely heavily on Tailwind logical properties (start, end, me, ms, pe, ps). Avoid explicitly setting 'left' or 'right' margins/paddings unless specifically required for LTR-only components.",
+    "Do NOT output generic AI slop. Create an aggressive, cinematic automotive feel. The user's goal is 'Awwwards SOTD level'.",
+    "For the custom cursor, disable it on mobile viewports using a CSS media query or React window size hook.",
+    "Test interactive states (hover/active/focus). Ensure the 'Electric Red' pops strongly against the graphite/matte black backgrounds.",
+    "No fake claims or invented stats. Keep demo data realistic to the tuning industry."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "You MUST use absolute paths for creating components.",
+    "Create dynamic interactive UI without 'generic AI' feel.",
+    "Add 'data-testid' to all interactive elements for testability.",
+    "Implement WhatsApp integration using the 'wa.me' URL scheme with pre-filled text.",
+    "Do not use totally transparent overlays. Use backdrop-blur with a black color like bg-black/50.",
+    "Use framer-motion heavily for scroll reveals, text reveals, and micro-interactions. Static designs are forbidden.",
+    "Do NOT output plain HTML/CSS placeholder text for images. Use the exact provided image URLs.",
+    "Never use generic AI assistant emojis for icons.",
+    "Add transition utilities selectively (e.g., 'transition-colors' or 'transition-opacity'), DO NOT use 'transition-all'."
+  ]
+}

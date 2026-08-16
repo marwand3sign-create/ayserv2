@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /tba-control-x7q2
+
+Sitemap: https://ecu-tuning-iraq.preview.emergentagent.com/sitemap.xml

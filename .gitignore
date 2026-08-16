@@ -1,0 +1,11 @@
+node_modules/
+frontend/node_modules/
+frontend/build/
+.emergent/
+test_reports/
+__pycache__/
+*.pyc
+.env
+backend/.env
+frontend/.env
+memory/test_credentials.md
