@@ -1,3 +1,5 @@
+import heroCars from "../assets/hero-cars.jpg";
+
 export const siteConfig = {
   name: "TUNING BY AYSER",
   nameShort: "TBA",
@@ -11,7 +13,7 @@ export const siteConfig = {
     facebook: "https://www.facebook.com/share/1EdnVYNcJF/",
   },
   images: {
-    hero: "https://images.unsplash.com/photo-1783786372340-7e9e9a5683c3?crop=entropy&cs=srgb&fm=jpg&q=85&w=1920",
+    hero: heroCars,
     servicesBg: "https://images.unsplash.com/photo-1784609525306-93e21dbf3c85?crop=entropy&cs=srgb&fm=jpg&q=85&w=1600",
     engine: "https://images.unsplash.com/photo-1527383418406-f85a3b146499?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
   },
