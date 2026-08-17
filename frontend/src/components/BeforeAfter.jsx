@@ -72,9 +72,9 @@ export default function BeforeAfter() {
               <div className="absolute inset-0 bg-gradient-to-t from-ink/85 to-transparent" />
               <DynoCurve tuned={false} />
             </div>
-            <div className="absolute inset-x-0 top-3 sm:top-4 z-10 flex items-start justify-between px-3 sm:px-4 pointer-events-none">
-              <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.12em] sm:tracking-[0.25em] bg-white/15 backdrop-blur px-2.5 py-1.5 whitespace-nowrap">{t.beforeAfter.stock}</span>
-              <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.12em] sm:tracking-[0.25em] bg-rev text-white px-2.5 py-1.5 whitespace-nowrap">{t.beforeAfter.modified}</span>
+            <div className="absolute inset-x-0 top-3 sm:top-4 z-10 pointer-events-none" dir="ltr">
+              <span className="absolute left-3 sm:left-4 font-mono text-[9px] sm:text-[10px] tracking-[0.12em] sm:tracking-[0.25em] bg-white/15 backdrop-blur px-2.5 py-1.5 whitespace-nowrap">{t.beforeAfter.stock}</span>
+              <span className="absolute right-3 sm:right-4 font-mono text-[9px] sm:text-[10px] tracking-[0.12em] sm:tracking-[0.25em] bg-rev text-white px-2.5 py-1.5 whitespace-nowrap">{t.beforeAfter.modified}</span>
             </div>
             <div className="absolute inset-y-0" style={{ left: `${pos}%` }}>
               <div className="absolute inset-y-0 -translate-x-1/2 w-px bg-rev" />
