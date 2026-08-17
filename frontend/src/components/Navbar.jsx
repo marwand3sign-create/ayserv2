@@ -30,17 +30,10 @@ export default function Navbar({ onOpenTracker }) {
     en: "Calculator",
   }[lang] || "حاسبة القوة";
 
-  const soundLabel = {
-    ar: "صوتيات",
-    ku: "دەنگەکان",
-    en: "Acoustics",
-  }[lang] || "صوتيات";
-
   const links = [
     { id: "#home", label: t.nav.home },
     { id: "#services", label: t.nav.services },
     { id: "#calculator", label: calcLabel },
-    { id: "#sound", label: soundLabel },
     { id: "#vehicles", label: t.nav.vehicles },
     { id: "#about", label: t.nav.about },
     { id: "#contact", label: t.nav.contact },
