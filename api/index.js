@@ -138,6 +138,21 @@ async function requireAdmin(req, res, next) {
 
 // ==================== PUBLIC ROUTES ====================
 
+// TEMPORARY diagnostic endpoint — reveals no secret values, only booleans/lengths.
+// Remove once admin login is confirmed working.
+app.get("/api/auth/_debug", (req, res) => {
+  res.json({
+    adminConfigured: ADMIN_CONFIGURED,
+    adminEmailSet: Boolean(process.env.ADMIN_EMAIL),
+    adminEmailLength: (process.env.ADMIN_EMAIL || "").length,
+    adminPasswordSet: Boolean(process.env.ADMIN_PASSWORD),
+    adminPasswordLength: (process.env.ADMIN_PASSWORD || "").length,
+    adminPasswordTrimmedLength: ADMIN_PASSWORD.length,
+    jwtSecretSet: Boolean(process.env.JWT_SECRET),
+    mongoConfigured: Boolean(MONGO_URL),
+  });
+});
+
 app.get("/api/content", async (req, res) => {
   const db = await getDb();
   if (db) {
