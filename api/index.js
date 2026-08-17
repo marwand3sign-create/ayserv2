@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -7,14 +8,30 @@ const https = require("https");
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+app.use(cors(allowedOrigins.length ? { origin: allowedOrigins } : {}));
 app.use(express.json());
 
-const JWT_SECRET = process.env.JWT_SECRET || "fbf1121012b01e876de336f483b248fb69e2383050414248d9e76c28ab3b3e65";
-const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "ayser@tuningbyayser.com").trim().toLowerCase();
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "AyserTBA@2026";
+// SECURITY: no hardcoded fallback secrets. JWT_SECRET falls back to a random
+// per-instance value (never guessable, but sessions reset on cold start) if
+// not configured. Admin login is disabled until ADMIN_EMAIL/ADMIN_PASSWORD
+// are explicitly set via environment variables.
+if (!process.env.JWT_SECRET) {
+  console.warn("[SECURITY] JWT_SECRET is not set — using a random per-instance secret. Set JWT_SECRET in environment variables for stable admin sessions.");
+}
+const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(48).toString("hex");
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+const ADMIN_CONFIGURED = Boolean(ADMIN_EMAIL && ADMIN_PASSWORD);
 const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || "";
 const DB_NAME = process.env.DB_NAME || "tba_database";
+
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOGIN_LOCKOUT_MS = 15 * 60 * 1000;
 
 // In-Memory fallback store if MongoDB is not yet connected
 const inMemoryStore = {
@@ -38,11 +55,9 @@ const inMemoryStore = {
     telegramBotToken: "",
     telegramChatId: "",
   },
-  admin: {
-    email: ADMIN_EMAIL,
-    passwordHash: bcrypt.hashSync(ADMIN_PASSWORD, 10),
-    name: "Ayser",
-  },
+  admin: ADMIN_CONFIGURED
+    ? { email: ADMIN_EMAIL, passwordHash: bcrypt.hashSync(ADMIN_PASSWORD, 10), name: "Ayser" }
+    : null,
   loginAttempts: {},
 };
 
@@ -57,16 +72,18 @@ async function getDb() {
     await client.connect();
     cachedClient = client;
     cachedDb = client.db(DB_NAME);
-    // Seed admin if not existing
-    const adminCollection = cachedDb.collection("admins");
-    const existing = await adminCollection.findOne({ email: ADMIN_EMAIL });
-    if (!existing) {
-      await adminCollection.insertOne({
-        email: ADMIN_EMAIL,
-        password_hash: bcrypt.hashSync(ADMIN_PASSWORD, 10),
-        name: "Ayser",
-        created_at: new Date().toISOString(),
-      });
+    // Seed admin if not existing (only when explicitly configured via env vars)
+    if (ADMIN_CONFIGURED) {
+      const adminCollection = cachedDb.collection("admins");
+      const existing = await adminCollection.findOne({ email: ADMIN_EMAIL });
+      if (!existing) {
+        await adminCollection.insertOne({
+          email: ADMIN_EMAIL,
+          password_hash: bcrypt.hashSync(ADMIN_PASSWORD, 10),
+          name: "Ayser",
+          created_at: new Date().toISOString(),
+        });
+      }
     }
     return cachedDb;
   } catch (err) {
@@ -108,7 +125,7 @@ async function requireAdmin(req, res, next) {
       if (!admin) return res.status(401).json({ detail: "Admin not found" });
       req.admin = admin;
     } else {
-      if (decoded.sub !== ADMIN_EMAIL) return res.status(401).json({ detail: "Admin not found" });
+      if (!ADMIN_CONFIGURED || decoded.sub !== ADMIN_EMAIL) return res.status(401).json({ detail: "Admin not found" });
       req.admin = { email: ADMIN_EMAIL, name: inMemoryStore.admin.name };
     }
     next();
@@ -221,21 +238,41 @@ app.get("/api/booking-status", async (req, res) => {
 app.post("/api/auth/login", async (req, res) => {
   const email = (req.body.email || "").trim().toLowerCase();
   const password = req.body.password || "";
+
+  const attempt = inMemoryStore.loginAttempts[email];
+  if (attempt && attempt.lockedUntil && attempt.lockedUntil > Date.now()) {
+    return res.status(429).json({ detail: "Too many failed attempts. Try again later." });
+  }
+
+  const fail = () => {
+    const prev = inMemoryStore.loginAttempts[email] || { count: 0 };
+    const count = prev.count + 1;
+    inMemoryStore.loginAttempts[email] = {
+      count,
+      lockedUntil: count >= MAX_LOGIN_ATTEMPTS ? Date.now() + LOGIN_LOCKOUT_MS : null,
+    };
+    return res.status(401).json({ detail: "Invalid email or password" });
+  };
+
   const db = await getDb();
 
   let admin = null;
   if (db) {
     admin = await db.collection("admins").findOne({ email });
     if (!admin || !bcrypt.compareSync(password, admin.password_hash)) {
-      return res.status(401).json({ detail: "Invalid email or password" });
+      return fail();
     }
   } else {
+    if (!ADMIN_CONFIGURED) {
+      return res.status(503).json({ detail: "Admin login is not configured. Set ADMIN_EMAIL and ADMIN_PASSWORD environment variables." });
+    }
     if (email !== ADMIN_EMAIL || !bcrypt.compareSync(password, inMemoryStore.admin.passwordHash)) {
-      return res.status(401).json({ detail: "Invalid email or password" });
+      return fail();
     }
     admin = inMemoryStore.admin;
   }
 
+  delete inMemoryStore.loginAttempts[email];
   const token = jwt.sign({ sub: email, role: "admin" }, JWT_SECRET, { expiresIn: "12h" });
   return res.json({ token, admin: { email, name: admin.name || "Admin" } });
 });
