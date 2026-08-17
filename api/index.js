@@ -23,9 +23,11 @@ app.use(express.json());
 if (!process.env.JWT_SECRET) {
   console.warn("[SECURITY] JWT_SECRET is not set — using a random per-instance secret. Set JWT_SECRET in environment variables for stable admin sessions.");
 }
-const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(48).toString("hex");
+const JWT_SECRET = (process.env.JWT_SECRET || "").trim() || crypto.randomBytes(48).toString("hex");
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
+// Trim defensively: env values pasted via a dashboard UI often pick up a
+// trailing newline/space, which would otherwise silently break every login.
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || "").trim();
 const ADMIN_CONFIGURED = Boolean(ADMIN_EMAIL && ADMIN_PASSWORD);
 const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || "";
 const DB_NAME = process.env.DB_NAME || "tba_database";
