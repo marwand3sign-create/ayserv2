@@ -20,7 +20,6 @@ import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import WhatsAppFloat from "../components/WhatsAppFloat";
 
-import DynoCalculator from "../components/DynoCalculator";
 import TrackerModal from "../components/TrackerModal";
 
 export default function Landing() {
@@ -54,7 +53,6 @@ export default function Landing() {
         <main>
           <Hero />
           <VehicleSelector onChange={setVehicle} onServicePick={setOpenService} />
-          <DynoCalculator />
           <Services openId={openService} onClose={closeService} />
           <ECUFlow />
           <BeforeAfter />

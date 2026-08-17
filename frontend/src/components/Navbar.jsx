@@ -24,16 +24,9 @@ export default function Navbar({ onOpenTracker }) {
     en: "Track Car",
   }[lang] || "تتبع سيارتك";
 
-  const calcLabel = {
-    ar: "حاسبة القوة",
-    ku: "ژمێرەری هێز",
-    en: "Calculator",
-  }[lang] || "حاسبة القوة";
-
   const links = [
     { id: "#home", label: t.nav.home },
     { id: "#services", label: t.nav.services },
-    { id: "#calculator", label: calcLabel },
     { id: "#vehicles", label: t.nav.vehicles },
     { id: "#about", label: t.nav.about },
     { id: "#contact", label: t.nav.contact },
